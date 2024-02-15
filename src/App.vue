@@ -11,7 +11,7 @@ export default {
       projects: [],
       startUrl: 'http://127.0.0.1:8000',
       apiUrls: {
-        projects: '/api/projects',
+        projects: '/api/projects?page=1',
       }
     }
   },
@@ -24,7 +24,7 @@ export default {
     getProjects() {
       axios.get(this.startUrl + this.apiUrls.projects).then(response => {
         console.log(response);
-        this.projects = response.data.results;
+        this.projects = response.data.results.data;
       }).catch(error => { console.log(error) });
     },
   },
