@@ -1,0 +1,6 @@
+/* ---- COMMON ---- */
+@use './variables' as *;
+
+h1 {
+    color: $primary-color;
+}
