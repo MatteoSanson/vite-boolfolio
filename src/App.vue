@@ -1,10 +1,10 @@
 <script>
 export default {
-  name: 'DefaultTemplate',
+  name: 'Boolfolio',
 
   data() {
     return {
-      text: 'Template Vite VueJS',
+      text: 'Boolfolio',
     };
   },
 };
