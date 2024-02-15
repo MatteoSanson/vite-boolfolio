@@ -5,6 +5,15 @@ export default {
     name: 'ProjectCard',
     props: {
         project: Object,
+    },
+    computed: {
+        formattedTechnologies() {
+            if (this.project.technologies.length > 0) {
+                return this.project.technologies.map(technology => technology.title).join(', ');
+            } else {
+                return '/';
+            }
+        }
     }
 }
 </script>
@@ -15,11 +24,8 @@ export default {
             <h4 class="card-title custom-h-h4">{{ project.title }}</h4>
             <p class="card-text"><strong>Visibility:</strong> {{ project.visibility }}</p>
             <p class="card-text"><strong>Type:</strong> {{ project.type.title }}</p>
-            <p class="card-text custom-h-h4"><strong>Technologies:</strong>{{ project.technologies.length > 0 ?
-                ' ' : ' /' }}
-                <span v-for="(technology, index) in project.technologies" :key="index">
-                    {{ technology.title }}{{ index === project.technologies.length - 1 ? '' : ', ' }}
-                </span>
+            <p class="card-text custom-h-h4"><strong>Technologies:</strong>
+                {{ formattedTechnologies }}
             </p>
             <a href="#" class="card-link">Card link</a>
         </div>
