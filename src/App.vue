@@ -11,7 +11,7 @@ export default {
       projects: [],
       startUrl: 'http://127.0.0.1:8000',
       apiUrls: {
-        projects: '/api/projects?page=1',
+        projects: '/api/projects',
       }
     }
   },
@@ -36,7 +36,8 @@ export default {
 
 <template>
   <AppHeader />
-  <AppMain :projects="projects" />
+  <!-- <AppMain :projects="projects" /> -->
+  <RouterView />
   <AppFooter />
 </template>
 
