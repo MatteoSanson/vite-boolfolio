@@ -14,8 +14,14 @@ export default {
 <template>
   <AppHeader />
   <!-- <AppMain :projects="projects" /> -->
-  <RouterView />
+  <div class="router-view-container">
+    <RouterView />
+  </div>
   <AppFooter />
 </template>
 
-<style scoped></style>
+<style scoped>
+.router-view-container {
+  min-height: calc(100vh - 140px);
+}
+</style>
