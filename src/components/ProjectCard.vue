@@ -27,7 +27,9 @@ export default {
             <p class="card-text custom-h-h4"><strong>Technologies:</strong>
                 {{ formattedTechnologies }}
             </p>
-            <a href="#" class="card-link">Card link</a>
+            <!-- <a href="#" class="card-link">Card link</a> -->
+            <router-link :to="{ name: 'single-project', params: { slug: project.slug } }"
+                class="btn btn-primary btn-sm">Details</router-link>
         </div>
     </div>
 </template>
