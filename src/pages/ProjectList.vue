@@ -6,6 +6,7 @@ export default {
     name: 'ProjectList',
     data() {
         return {
+            loading: false,
             currentPage: 1,
             dataResponse: {},
             projects: [],
@@ -20,6 +21,7 @@ export default {
     },
     methods: {
         getProjects() {
+            this.loading = true;
             axios.get(this.startUrl + this.apiUrls.projects, {
                 params: {
                     page: this.currentPage,
@@ -29,7 +31,8 @@ export default {
                 this.dataResponse = response.data;
                 // this.projects = response.data.results.data;
                 console.log(this.dataResponse);
-            }).catch(error => { console.log(error) });
+            }).catch(error => { console.log(error) })
+                .finally(() => { this.loading = false });
         },
         nextPage() {
             this.currentPage++;
@@ -53,28 +56,35 @@ export default {
                 <h3>Projects List</h3>
             </div>
 
-            <div class="row">
+            <div v-if="loading">
+                <button class="btn btn-primary" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span role="status">Loading...</span>
+                </button>
+            </div>
+
+            <div class="row" v-else>
                 <div class="col col-md-4 g-3" v-for="project in dataResponse.results?.data">
                     <ProjectCard :project="project" />
                 </div>
-            </div>
 
-            <nav class="py-3">
-                <ul class="d-flex justify-content-between list-unstyled">
-                    <li>
-                        <button class="btn btn-sm btn-primary" @click="prevPage"
-                            :class="{ 'disabled': !dataResponse.results?.prev_page_url }">
-                            Previous
-                        </button>
-                    </li>
-                    <li>
-                        <button class="btn btn-sm btn-primary" @click="nextPage"
-                            :class="{ 'disabled': !dataResponse.results?.next_page_url }">
-                            Next
-                        </button>
-                    </li>
-                </ul>
-            </nav>
+                <nav class="py-3">
+                    <ul class="d-flex justify-content-between list-unstyled">
+                        <li>
+                            <button class="btn btn-sm btn-primary" @click="prevPage"
+                                :class="{ 'disabled': !dataResponse.results?.prev_page_url }">
+                                Previous
+                            </button>
+                        </li>
+                        <li>
+                            <button class="btn btn-sm btn-primary" @click="nextPage"
+                                :class="{ 'disabled': !dataResponse.results?.next_page_url }">
+                                Next
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
 
         </div>
     </main>
