@@ -1,15 +1,83 @@
 <script>
-    export default {
-        name: 'ProjectList',
-    }
+import ProjectCard from '../components/ProjectCard.vue';
+import axios from 'axios';
+
+export default {
+    name: 'ProjectList',
+    data() {
+        return {
+            currentPage: 1,
+            dataResponse: {},
+            projects: [],
+            startUrl: 'http://127.0.0.1:8000',
+            apiUrls: {
+                projects: '/api/projects',
+            }
+        }
+    },
+    components: {
+        ProjectCard,
+    },
+    methods: {
+        getProjects() {
+            axios.get(this.startUrl + this.apiUrls.projects, {
+                params: {
+                    page: this.currentPage,
+                }
+            }).then(response => {
+                // console.log(response);
+                this.dataResponse = response.data;
+                // this.projects = response.data.results.data;
+                console.log(this.dataResponse);
+            }).catch(error => { console.log(error) });
+        },
+        nextPage() {
+            this.currentPage++;
+            this.getProjects();
+        },
+        prevPage() {
+            this.currentPage--;
+            this.getProjects();
+        },
+    },
+    created() {
+        this.getProjects();
+    },
+}
 </script>
 
 <template>
-    <div class="container">
-        project list
-    </div>
+    <main>
+        <div class="container py-3">
+            <div class="py-3">
+                <h3>Projects List</h3>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-4 g-3" v-for="project in dataResponse.results?.data">
+                    <ProjectCard :project="project" />
+                </div>
+            </div>
+
+            <nav class="py-3">
+                <ul class="d-flex justify-content-between list-unstyled">
+                    <li>
+                        <button class="btn btn-sm btn-primary" @click="prevPage"
+                            :class="{ 'disabled': !dataResponse.results?.prev_page_url }">
+                            Previous
+                        </button>
+                    </li>
+                    <li>
+                        <button class="btn btn-sm btn-primary" @click="nextPage"
+                            :class="{ 'disabled': !dataResponse.results?.next_page_url }">
+                            Next
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </main>
 </template>
 
-<style>
-
-</style>
+<style></style>
