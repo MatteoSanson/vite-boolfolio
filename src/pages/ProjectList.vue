@@ -1,5 +1,6 @@
 <script>
 import ProjectCard from '../components/ProjectCard.vue';
+import AppLoader from '../components/AppLoader.vue';
 import axios from 'axios';
 
 export default {
@@ -18,6 +19,7 @@ export default {
     },
     components: {
         ProjectCard,
+        AppLoader,
     },
     methods: {
         getProjects() {
@@ -56,12 +58,7 @@ export default {
                 <h3>Projects List</h3>
             </div>
 
-            <div v-if="loading">
-                <button class="btn btn-primary" type="button" disabled>
-                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                    <span role="status">Loading...</span>
-                </button>
-            </div>
+            <AppLoader v-if="loading" />
 
             <div class="row" v-else>
                 <div class="col col-md-4 g-3" v-for="project in dataResponse.results?.data">
