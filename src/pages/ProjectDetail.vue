@@ -1,6 +1,6 @@
 <script>
 import axios from 'axios';
-import NotFound from './NotFound.vue';
+// import NotFound from './NotFound.vue';
 
 export default {
     name: 'ProjectDetail',
@@ -14,9 +14,9 @@ export default {
             }
         }
     },
-    components: {
-        NotFound,
-    },
+    // components: {
+    //     NotFound,
+    // },
 
     methods: {
         getProject() {
@@ -80,9 +80,12 @@ export default {
 
         <div v-else>
             <!-- Reindirizzamento alla pagina "not found" -->
-            <router-link to="/not-found">
-                <NotFound />
-            </router-link>
+
+            <div class="py-3">
+                <p><strong>The selected project does not exist.</strong></p>
+                <p class="leader"><router-link :to="{ name: 'projects' }">Back to
+                        Projects</router-link></p>
+            </div>
         </div>
 
     </div>
