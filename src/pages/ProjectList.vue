@@ -1,6 +1,7 @@
 <script>
 import ProjectCard from '../components/ProjectCard.vue';
 import AppLoader from '../components/AppLoader.vue';
+import ProjectSearch from '../components/ProjectSearch.vue';
 import axios from 'axios';
 import store from '../store';
 
@@ -12,12 +13,14 @@ export default {
             loading: false,
             currentPage: 1,
             dataResponse: {},
+            errors: null,
             projects: [],
         }
     },
     components: {
         ProjectCard,
         AppLoader,
+        ProjectSearch,
     },
     methods: {
         getProjects() {
@@ -25,13 +28,19 @@ export default {
             axios.get(this.store.api.startUrl + this.store.api.apiUrls.projects, {
                 params: {
                     page: this.currentPage,
+                    key: this.store.projects.searchKey,
                 }
             }).then(response => {
                 // console.log(response);
                 this.dataResponse = response.data;
                 // this.projects = response.data.results.data;
                 console.log(this.dataResponse);
-            }).catch(error => { console.log(error) })
+            }).catch(error => {
+                console.log(error);
+                this.dataResponse.results.data = [];
+                console.log(error.response.data.message);
+                this.errors = error.response.data.message;
+            })
                 .finally(() => { this.loading = false });
         },
         nextPage() {
@@ -71,6 +80,10 @@ export default {
             <div class="py-3">
                 <h3>Projects List - page {{ currentPage }}</h3>
             </div>
+
+            <ProjectSearch @search-project="getProjects" />
+
+            <div v-if="errors">{{ errors }}</div>
 
             <AppLoader v-if="loading" />
 
