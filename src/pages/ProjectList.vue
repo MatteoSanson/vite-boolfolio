@@ -24,6 +24,7 @@ export default {
     },
     methods: {
         getProjects() {
+            this.errors = null;
             this.loading = true;
             axios.get(this.store.api.startUrl + this.store.api.apiUrls.projects, {
                 params: {
