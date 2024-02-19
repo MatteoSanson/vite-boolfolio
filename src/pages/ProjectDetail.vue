@@ -1,17 +1,15 @@
 <script>
 import axios from 'axios';
 // import NotFound from './NotFound.vue';
+import store from '../store';
 
 export default {
     name: 'ProjectDetail',
     data() {
         return {
+            store,
             project: {},
             projectNotFound: false,
-            startUrl: 'http://127.0.0.1:8000',
-            apiUrls: {
-                projects: '/api/projects',
-            }
         }
     },
     // components: {
@@ -21,7 +19,7 @@ export default {
     methods: {
         getProject() {
             axios
-                .get(this.startUrl + this.apiUrls.projects + '/' + this.$route.params.slug)
+                .get(this.store.api.startUrl + this.store.api.apiUrls.projects + '/' + this.$route.params.slug)
                 .then((response) => {
                     this.project = response.data.result;
                     if (!this.project || Object.keys(this.project).length === 0) {
