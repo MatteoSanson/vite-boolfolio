@@ -38,15 +38,31 @@ export default {
         },
         nextPage() {
             this.currentPage++;
+            this.$router.push({
+                name: 'projects', query: { page: this.currentPage },
+            });
             this.getProjects();
         },
         prevPage() {
             this.currentPage--;
+            this.$router.push({
+                name: 'projects', query: { page: this.currentPage },
+            });
             this.getProjects();
         },
     },
     created() {
+        this.currentPage = this.$route.query?.page ?? 1;
         this.getProjects();
+
+        // this.$watch(
+        //     () => this.$route.query,
+        //     (toParams, previousParams) => {
+        //         console.log(this.$route);
+        //         this.currentPage = this.$route.query?.page ?? 1;
+        //         this.getProjects();
+        //     }
+        // );
     },
 }
 </script>
@@ -55,7 +71,7 @@ export default {
     <main>
         <div class="container py-3">
             <div class="py-3">
-                <h3>Projects List</h3>
+                <h3>Projects List - page {{ currentPage }}</h3>
             </div>
 
             <AppLoader v-if="loading" />
