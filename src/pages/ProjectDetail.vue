@@ -20,8 +20,8 @@ export default {
                 .then((response) => {
                     this.project = response.data.result;
                 })
-                .catch((errore) => {
-                    console.log(errore);
+                .catch((error) => {
+                    console.log(error);
                 });
         }
     },
