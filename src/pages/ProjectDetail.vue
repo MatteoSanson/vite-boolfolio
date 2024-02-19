@@ -1,16 +1,21 @@
 <script>
 import axios from 'axios';
+import NotFound from './NotFound.vue';
 
 export default {
     name: 'ProjectDetail',
     data() {
         return {
             project: {},
+            projectNotFound: false,
             startUrl: 'http://127.0.0.1:8000',
             apiUrls: {
                 projects: '/api/projects',
             }
         }
+    },
+    components: {
+        NotFound,
     },
 
     methods: {
@@ -19,22 +24,33 @@ export default {
                 .get(this.startUrl + this.apiUrls.projects + '/' + this.$route.params.slug)
                 .then((response) => {
                     this.project = response.data.result;
+                    if (!this.project || Object.keys(this.project).length === 0) {
+                        this.projectNotFound = true;
+                    }
                 })
                 .catch((error) => {
                     console.log(error);
+                    this.projectNotFound = true;
                 });
         }
     },
     created() {
-        // console.log(this.$route);
+        console.log(this.$route);
         this.getProject();
+
+        this.$watch(
+            () => this.$route.params,
+            (toParams, previousParams) => {
+                this.getProject();
+            }
+        );
     },
 }
 </script>
 
 <template>
     <div class="container">
-        <div class="mt-3 mb-5">
+        <div v-if="!projectNotFound" class="mt-3 mb-5">
             <div class="d-flex gap-2 align-items-center">
                 <h2>Project #{{ project.id }} -</h2>
                 <h1>{{ project.title }}</h1>
@@ -60,6 +76,13 @@ export default {
                     <span v-else> /</span>
                 </p>
             </div>
+        </div>
+
+        <div v-else>
+            <!-- Reindirizzamento alla pagina "not found" -->
+            <router-link to="/not-found">
+                <NotFound />
+            </router-link>
         </div>
 
     </div>
